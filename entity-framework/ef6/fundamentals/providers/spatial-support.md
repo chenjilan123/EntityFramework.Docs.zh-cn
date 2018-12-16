@@ -3,12 +3,12 @@ title: 针对空间类型-EF6 的提供程序支持
 author: divega
 ms.date: 10/23/2016
 ms.assetid: 1097cb00-15f5-453d-90ed-bff9403d23e3
-ms.openlocfilehash: ffd22222f59a541d8135d3738d37a7e8f5dc5d7c
-ms.sourcegitcommit: 2b787009fd5be5627f1189ee396e708cd130e07b
+ms.openlocfilehash: 9c00e82c663daec219fe649a8d889afcc81564f7
+ms.sourcegitcommit: 5e11125c9b838ce356d673ef5504aec477321724
 ms.translationtype: MT
 ms.contentlocale: zh-CN
-ms.lasthandoff: 09/13/2018
-ms.locfileid: "45489747"
+ms.lasthandoff: 10/25/2018
+ms.locfileid: "50022270"
 ---
 # <a name="provider-support-for-spatial-types"></a>针对空间类型的提供程序支持
 实体框架支持使用通过 DbGeography 或 DbGeometry 类的空间数据。 这些类要依赖于实体框架提供程序提供特定于数据库的功能。 并非所有提供程序支持空间数据，这样做的那些可能具有如的空间类型程序集安装的其他先决条件。 下面提供了有关针对空间类型的提供程序支持的详细信息。  
@@ -56,4 +56,4 @@ SQL Server 空间支持取决于 SqlGeography 和 SqlGeometry 的低级别，特
 
 安装 Visual Studio 时它通常还会安装 SQL Server 的版本，这将包括的 Microsoft.SqlServer.Types.dll 安装。  
 
-如果想要使用的空间类型，在计算机上未安装 SQL Server 或从 SQL Server 安装中排除空间类型，您将需要手动安装它们。 可以使用安装类型`SQLSysClrTypes.msi`，这是 Microsoft SQL Server 功能包的一部分。 空间类型是 SQL Server 特定于版本，因此建议[搜索"SQL Server 功能包"](https://www.microsoft.com/en-us/search/result.aspx?q=sql+server+feature+pack)在 Microsoft 下载中心，然后选择并下载到您将使用的 SQL Server 的版本相对应的选项。
+如果想要使用的空间类型，在计算机上未安装 SQL Server 或从 SQL Server 安装中排除空间类型，您将需要手动安装它们。 可以使用安装类型`SQLSysClrTypes.msi`，这是 Microsoft SQL Server 功能包的一部分。 空间类型是 SQL Server 特定于版本，因此建议[搜索"SQL Server 功能包"](https://www.microsoft.com/search/result.aspx?q=sql+server+feature+pack)在 Microsoft 下载中心，然后选择并下载到您将使用的 SQL Server 的版本相对应的选项。

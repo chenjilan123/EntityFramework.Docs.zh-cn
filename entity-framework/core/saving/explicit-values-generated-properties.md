@@ -13,9 +13,9 @@ ms.locfileid: "42997848"
 ---
 # <a name="setting-explicit-values-for-generated-properties"></a>设置已生成属性的显式值
 
-生成的属性是在添加和/或更新实体时生成其值（由 EF 或数据库生成）的属性。 有关详细信息，请参阅[生成的属性](../modeling/generated-properties.md)。
+生成的属性是在添加和/或更新实体时由 EF 或数据库生成其值的属性。 有关详细信息，请参阅[生成的属性](../modeling/generated-properties.md)。
 
-可能会出现希望设置已生成属性的显式值，而不是生成显式值的情况。
+在某些情况下，可能希望为已生成属性设置显式值，而不是生成一个显式值。
 
 > [!TIP]  
 > 可在 GitHub 上查看此文章的[示例](https://github.com/aspnet/EntityFramework.Docs/tree/master/samples/core/Saving/Saving/ExplicitValuesGenerateProperties/)。
@@ -33,8 +33,8 @@ ms.locfileid: "42997848"
 [!code-csharp[Main](../../../samples/core/Saving/Saving/ExplicitValuesGenerateProperties/EmployeeContext.cs#EmploymentStarted)]
 
 以下代码可将两个员工插入到数据库中。
-* 对于第一个员工，没有为 `Employee.EmploymentStarted` 属性分配任何值，因此仍将设置为 `DateTime` 的 CLR 默认值。
-* 对于第二个员工，已设置 `1-Jan-2000` 的显式值。
+* 对于第一个员工，没有为 `Employee.EmploymentStarted` 属性分配任何值，因此仍将其设置为 CLR 的 `DateTime` 默认值。
+* 对于第二个员工，已设置显式值 `1-Jan-2000`。
 
 [!code-csharp[Main](../../../samples/core/Saving/Saving/ExplicitValuesGenerateProperties/Sample.cs#EmploymentStarted)]
 
@@ -45,14 +45,14 @@ ms.locfileid: "42997848"
 2: Jane Doe, 1/1/2000 12:00:00 AM
 ```
 
-### <a name="explicit-values-into-sql-server-identity-columns"></a>显式值到 SQL Server IDENTITY 列
+### <a name="explicit-values-into-sql-server-identity-columns"></a>显式值插入 SQL Server IDENTITY 列
 
 按照约定，`Employee.EmployeeId` 属性是存储生成的 `IDENTITY` 列。
 
 对于大多数情况，上述方法将适用于键属性。 但是，若要将显式值插入到 SQL Server `IDENTITY` 列中，则必须在调用 `SaveChanges()` 之前手动启用 `IDENTITY_INSERT`。
 
 > [!NOTE]  
-> 积压工作中有[功能请求](https://github.com/aspnet/EntityFramework/issues/703)，用来在 SQL Server 提供程序内自动执行此操作。
+> 对于积压工作存在一个[功能请求](https://github.com/aspnet/EntityFramework/issues/703)，请求在 SQL Server 提供程序内自动执行此操作。
 
 [!code-csharp[Main](../../../samples/core/Saving/Saving/ExplicitValuesGenerateProperties/Sample.cs#EmployeeId)]
 
@@ -81,7 +81,7 @@ ms.locfileid: "42997848"
 
 以下代码可增加数据库中两个员工的薪金。
 * 对于第一个员工，没有为 `Employee.LastPayRaise` 属性分配任何值，因此仍将设置为 null。
-* 对于第二个员工，已在一周前设置显式值（使加薪在较早的日期开始生效）。
+* 对于第二个员工，已将显式值设置为一周前（使加薪在较早的日期开始生效）。
 
 [!code-csharp[Main](../../../samples/core/Saving/Saving/ExplicitValuesGenerateProperties/Sample.cs#LastPayRaise)]
 

@@ -1,5 +1,5 @@
 ---
-title: 包括和排除类型的 EF Core
+title: 包括和排除类型 - EF Core
 author: rowanmiller
 ms.date: 10/27/2016
 ms.assetid: cbe6935e-2679-4b77-8914-a8d772240cf1
@@ -17,7 +17,7 @@ ms.locfileid: "42996145"
 
 ## <a name="conventions"></a>约定
 
-按照约定，在上下文的 `DbSet` 属性中公开的类型会包括在模型中。 此外，在 `OnModelCreating` 方法中提及的类型也会包括模型中。 最后，通过以递归方式浏览已发现类型的导航属性找到的任何类型也会包括在模型中。
+按照约定，在上下文的 `DbSet` 属性中公开的类型会包括在模型中。 此外，在 `OnModelCreating` 方法中提及的类型也将包括在其中。 最后，通过以递归方式浏览已发现类型的导航属性而找到的任何类型也会包括在模型中。
 
 **例如，以下代码列表中发现所有三种类型：**
 
@@ -25,7 +25,7 @@ ms.locfileid: "42996145"
 
 * `Post`，因为它是通过 `Blog.Posts` 导航属性发现的
 
-* `AuditEntry`，因为它是在 `OnModelCreating` 中提及的
+* `AuditEntry`，因为它在 `OnModelCreating` 中提及
 
 <!-- [!code-csharp[Main](samples/core/Modeling/Conventions/Samples/IncludedTypes.cs?highlight=3,7,16)] -->
 ``` csharp

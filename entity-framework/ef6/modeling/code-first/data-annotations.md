@@ -3,12 +3,12 @@ title: 第一个数据注释-EF6 的代码
 author: divega
 ms.date: 10/23/2016
 ms.assetid: 80abefbd-23c9-4fce-9cd3-520e5df9856e
-ms.openlocfilehash: 54e27f1b866da14d68db66ca5eca5a6dde819e26
-ms.sourcegitcommit: 15022dd06d919c29b1189c82611ea32f9fdc6617
+ms.openlocfilehash: 8d85ef85f56a23d9b3b526554417dc9dd360e139
+ms.sourcegitcommit: 39080d38e1adea90db741257e60dc0e7ed08aa82
 ms.translationtype: MT
 ms.contentlocale: zh-CN
-ms.lasthandoff: 09/27/2018
-ms.locfileid: "47415804"
+ms.lasthandoff: 11/03/2018
+ms.locfileid: "50980036"
 ---
 # <a name="code-first-data-annotations"></a>Code First 数据注释
 > [!NOTE]
@@ -30,26 +30,26 @@ ms.locfileid: "47415804"
 ``` csharp
     public class Blog
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string BloggerName { get; set;}
-        public virtual ICollection<Post> Posts { get; set; }
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string BloggerName { get; set;}
+        public virtual ICollection<Post> Posts { get; set; }
     }
 
     public class Post
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public DateTime DateCreated { get; set; }
-        public string Content { get; set; }
-        public int BlogId { get; set; }
-        public ICollection<Comment> Comments { get; set; }
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public DateTime DateCreated { get; set; }
+        public string Content { get; set; }
+        public int BlogId { get; set; }
+        public ICollection<Comment> Comments { get; set; }
     }
 ```
 
 因为它们是在博客和文章类方便地遵循代码的第一个约定并需要启用 EF 兼容性的调整。 但是，您可以使用批注的类和数据库映射到的有关向 EF 提供的详细信息。
 
- 
+ 
 
 ## <a name="key"></a>键
 
@@ -60,11 +60,11 @@ Entity Framework 依赖于具有一个密钥值，用于跟踪的实体的每个
 ``` csharp
     public class Blog
     {
-        [Key]
-        public int PrimaryTrackingKey { get; set; }
-        public string Title { get; set; }
-        public string BloggerName { get; set;}
-        public virtual ICollection<Post> Posts { get; set; }
+        [Key]
+        public int PrimaryTrackingKey { get; set; }
+        public string Title { get; set; }
+        public string BloggerName { get; set;}
+        public virtual ICollection<Post> Posts { get; set; }
     }
 ```
 
@@ -155,11 +155,11 @@ Entity Framework 依赖于具有一个密钥值，用于跟踪的实体的每个
 >[!NOTE]
 > 在某些情况下它不可能要为不可为 null，即使该属性是必需的数据库中的列。 例如，当对多个类型使用 TPH 继承策略数据存储在单个表。 如果派生的类型包括必需的属性列不能成为不可为 null 因为层次结构中的不是所有类型都将都具有此属性。
 
- 
+ 
 
 ![Blogs 表](~/ef6/media/jj591583-figure03.png)
 
- 
+ 
 
 ## <a name="maxlength-and-minlength"></a>MaxLength 和 MinLength
 
@@ -187,7 +187,7 @@ MaxLength 批注会影响数据库的属性的长度设置为 10。
 
 ![创建具有自定义错误消息页](~/ef6/media/jj591583-figure05.png)
 
- 
+ 
 
 ## <a name="notmapped"></a>NotMapped
 
@@ -204,7 +204,7 @@ MaxLength 批注会影响数据库的属性的长度设置为 10。
     }
 ```
 
- 
+ 
 
 ## <a name="complextype"></a>ComplexType
 
@@ -215,12 +215,12 @@ MaxLength 批注会影响数据库的属性的长度设置为 10。
     {
         public DateTime? DateCreated { get; set; }
 
-        [MaxLength(250)]
-        public string Description { get; set; }
+        [MaxLength(250)]
+        public string Description { get; set; }
     }
 ```
 
-请注意 BlogDetails 不具有任何类型的键属性。 在域驱动设计中，BlogDetails 称为值对象。 实体框架将值对象称为复杂类型。  不能自行跟踪复杂类型。
+请注意 BlogDetails 不具有任何类型的键属性。 在域驱动设计中，BlogDetails 称为值对象。 实体框架将值对象称为复杂类型。  不能自行跟踪复杂类型。
 
 但是作为博客类，它将作为博客对象的一部分进行跟踪的 BlogDetails 中的属性。 为了使代码首先将这种情况，你必须将 BlogDetails 类标记为复杂类型。
 
@@ -230,15 +230,15 @@ MaxLength 批注会影响数据库的属性的长度设置为 10。
     {
         public DateTime? DateCreated { get; set; }
 
-        [MaxLength(250)]
-        public string Description { get; set; }
+        [MaxLength(250)]
+        public string Description { get; set; }
     }
 ```
 
 现在可以在博客类来表示该博客 BlogDetails 中添加一个属性。
 
 ``` csharp
-        public BlogDetails BlogDetail { get; set; }
+        public BlogDetails BlogDetail { get; set; }
 ```
 
 在数据库中，博客表将包含的所有博客包括其 BlogDetail 属性中包含的属性的属性。 默认情况下，每个前面带有复杂类型，BlogDetail 的名称。
@@ -247,7 +247,7 @@ MaxLength 批注会影响数据库的属性的长度设置为 10。
 
 另一个注意事项是，虽然 DateCreated 属性被定义为不可为 null 的日期时间在类中，相关数据库字段是可以为 null。 如果你想要影响的数据库架构，则必须使用所需的批注。
 
- 
+ 
 
 ## <a name="concurrencycheck"></a>ConcurrencyCheck
 
@@ -256,11 +256,11 @@ ConcurrencyCheck 批注可以标记一个或多个要在进行并发检查数据
 让我们了解 ConcurrencyCheck 通过将其添加到 BloggerName 属性的工作原理。
 
 ``` csharp
-    [ConcurrencyCheck, MaxLength(10, ErrorMessage="BloggerName must be 10 characters or less"),MinLength(5)]
+    [ConcurrencyCheck, MaxLength(10, ErrorMessage="BloggerName must be 10 characters or less"),MinLength(5)]
     public string BloggerName { get; set; }
 ```
 
-当调用 SaveChanges 时，由于 ConcurrencyCheck 批注 BloggerName 字段中，将更新中使用该属性的原始值。 该命令将尝试查找正确的行通过筛选不仅上的密钥值，还在 BloggerName 的原始值。  以下是 UPDATE 命令发送到数据库，您可以看到该命令将更新包含 PrimaryTrackingKey 的行的关键部分为 1，该博客从数据库中检索时的原始值的"Julie"BloggerName。
+当调用 SaveChanges 时，由于 ConcurrencyCheck 批注 BloggerName 字段中，将更新中使用该属性的原始值。 该命令将尝试查找正确的行通过筛选不仅上的密钥值，还在 BloggerName 的原始值。  以下是 UPDATE 命令发送到数据库，您可以看到该命令将更新包含 PrimaryTrackingKey 的行的关键部分为 1，该博客从数据库中检索时的原始值的"Julie"BloggerName。
 
 ``` SQL
     where (([PrimaryTrackingKey] = @4) and ([BloggerName] = @5))
@@ -269,7 +269,7 @@ ConcurrencyCheck 批注可以标记一个或多个要在进行并发检查数据
 
 如果有人已更改该博客的博主名称，请在此期间，此更新将失败，则会将需要处理 DbUpdateConcurrencyException。
 
- 
+ 
 
 ## <a name="timestamp"></a>时间戳
 
@@ -286,7 +286,7 @@ ConcurrencyCheck 批注可以标记一个或多个要在进行并发检查数据
 
 ![使用时间戳列的 Blogs 表](~/ef6/media/jj591583-figure07.png)
 
- 
+ 
 
 ## <a name="table-and-column"></a>表和列
 
@@ -302,7 +302,7 @@ ConcurrencyCheck 批注可以标记一个或多个要在进行并发检查数据
 列批注是详细擅长中指定的映射列的特性。 您可以规定名称、 数据类型或甚至一列的表中显示的顺序。 下面是列属性的一个示例。
 
 ``` csharp
-    [Column(“BlogDescription", TypeName="ntext")]
+    [Column("BlogDescription", TypeName="ntext")]
     public String Description {get;set;}
 ```
 
@@ -312,7 +312,7 @@ ConcurrencyCheck 批注可以标记一个或多个要在进行并发检查数据
 
 ![Blogs 表和列重命名](~/ef6/media/jj591583-figure08.png)
 
- 
+ 
 
 ## <a name="databasegenerated"></a>DatabaseGenerated
 
@@ -327,7 +327,7 @@ ConcurrencyCheck 批注可以标记一个或多个要在进行并发检查数据
 
 默认情况下，读取上面是一个整数键属性将成为在数据库中的标识键。 这将是与将 DatabaseGenerated 设为 DatabaseGeneratedOption.Identity 相同。 如果不希望其成为标识键，您可以将值设置为 DatabaseGeneratedOption.None。
 
- 
+ 
 
 ## <a name="index"></a>索引
 
@@ -389,7 +389,7 @@ ConcurrencyCheck 批注可以标记一个或多个要在进行并发检查数据
     }
 ```
 
- 
+ 
 
 ## <a name="relationship-attributes-inverseproperty-and-foreignkey"></a>关系属性： InverseProperty 和 ForeignKey
 
@@ -398,25 +398,25 @@ ConcurrencyCheck 批注可以标记一个或多个要在进行并发检查数据
 
 第一个代码约定将负责在模型中最常见的关系，但有某些情况下，应帮助在位置。
 
-更改造成的问题及其与文章的博客类中的键属性的名称。 
+更改造成的问题及其与文章的博客类中的键属性的名称。 
 
 在生成数据库时，代码将首先看到在开机自检类的 BlogId 属性，并识别它，通过它与类名以及"Id"，匹配作为博客类的外键的约定。 但在博客类中没有任何 BlogId 属性。 此问题的解决方案是在 Post 中创建导航属性并使用外 DataAnnotation 帮助代码首先了解如何生成两个类之间的关系，使用 Post.BlogId 属性，以及如何指定中的约束数据库。
 
 ``` csharp
     public class Post
     {
-            public int Id { get; set; }
-            public string Title { get; set; }
-            public DateTime DateCreated { get; set; }
-            public string Content { get; set; }
-            public int BlogId { get; set; }
-            [ForeignKey("BlogId")]
-            public Blog Blog { get; set; }
-            public ICollection<Comment> Comments { get; set; }
+            public int Id { get; set; }
+            public string Title { get; set; }
+            public DateTime DateCreated { get; set; }
+            public string Content { get; set; }
+            public int BlogId { get; set; }
+            [ForeignKey("BlogId")]
+            public Blog Blog { get; set; }
+            public ICollection<Comment> Comments { get; set; }
     }
 ```
 
-在数据库中的约束演示 InternalBlogs.PrimaryTrackingKey 和 Posts.BlogId 之间的关系。 
+在数据库中的约束演示 InternalBlogs.PrimaryTrackingKey 和 Posts.BlogId 之间的关系。 
 
 ![InternalBlogs.PrimaryTrackingKey 与 Posts.BlogId 之间的关系](~/ef6/media/jj591583-figure09.png)
 
@@ -434,10 +434,10 @@ ConcurrencyCheck 批注可以标记一个或多个要在进行并发检查数据
 ``` csharp
     public class Person
     {
-            public int Id { get; set; }
-            public string Name { get; set; }
-            public List<Post> PostsWritten { get; set; }
-            public List<Post> PostsUpdated { get; set; }
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public List<Post> PostsWritten { get; set; }
+            public List<Post> PostsUpdated { get; set; }
     }
 ```
 
@@ -459,7 +459,7 @@ ConcurrencyCheck 批注可以标记一个或多个要在进行并发检查数据
 
 ![Posts 表，而无需额外外键](~/ef6/media/jj591583-figure11.png)
 
- 
+ 
 
 ## <a name="summary"></a>总结
 

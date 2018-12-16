@@ -4,12 +4,12 @@ author: rowanmiller
 ms.date: 08/06/2018
 ms.assetid: a29a3d97-b2d8-4d33-9475-40ac67b3b2c6
 uid: core/get-started/full-dotnet/existing-db
-ms.openlocfilehash: b9e079f88dd35016407b19bb627f8bd46edb3d4c
-ms.sourcegitcommit: ad1bdea58ed35d0f19791044efe9f72f94189c18
+ms.openlocfilehash: 1b90c491a3b2025da750a3266ff45d9d92bb1d0d
+ms.sourcegitcommit: b3c2b34d5f006ee3b41d6668f16fe7dcad1b4317
 ms.translationtype: HT
 ms.contentlocale: zh-CN
-ms.lasthandoff: 09/28/2018
-ms.locfileid: "47447152"
+ms.lasthandoff: 11/15/2018
+ms.locfileid: "51688610"
 ---
 # <a name="getting-started-with-ef-core-on-net-framework-with-an-existing-database"></a>通过现有数据库在 .NET Framework 上开始使用 EF Core
 
@@ -120,5 +120,6 @@ ms.locfileid: "47447152"
 ## <a name="next-steps"></a>后续步骤
 
 有关如何构建上下文和实体类的详细信息，请参阅以下文章：
+* [反向工程](xref:core/managing-schemas/scaffolding)
 * [Entity Framework Core 工具参考 - .NET CLI](xref:core/miscellaneous/cli/dotnet#dotnet-ef-dbcontext-scaffold)
 * [Entity Framework Core 工具参考 - 程序包管理器控制台](xref:core/miscellaneous/cli/powershell#scaffold-dbcontext)

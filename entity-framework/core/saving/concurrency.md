@@ -18,9 +18,9 @@ ms.locfileid: "42993107"
 > [!TIP]
 > 可在 GitHub 上查看此文章的[示例](https://github.com/aspnet/EntityFramework.Docs/tree/master/samples/core/Saving/Saving/Concurrency/)。
 
-_数据库并发_指的是多个进程或用户同时访问或更改数据库中的相同数据的情况。 _并发控制_指的是用于在发生并发更改时确保数据一致性的特定机制。
+_数据库并发_指多个进程或用户同时访问或更改数据库中的相同数据的情况。 _并发控制_指的是用于在发生并发更改时确保数据一致性的特定机制。
 
-EF Core 实现_乐观并发控制_，这意味着它将允许多个进程或用户独立进行更改而不产生同步或锁定的开销。 在理想情况下，这些更改将不会相互影响，因此能够成功。 在最坏的情况下，两个或更多进程将尝试进行冲突更改，其中只有一个进程应该成功。
+EF Core 实现_了乐观并发控制_，这意味着它将允许多个进程或用户独立进行更改，而不会产生同步或锁定的开销。 在理想情况下，这些更改将不会相互干扰，因此都能够成功。 在最坏的情况下，两个或更多进程将尝试进行冲突更改，而其中只有一个进程会成功。
 
 ## <a name="how-concurrency-control-works-in-ef-core"></a>并发控制在 EF Core 中的工作原理
 
@@ -29,15 +29,15 @@ EF Core 实现_乐观并发控制_，这意味着它将允许多个进程或用�
 - 如果这些值匹配，则可以完成该操作。
 - 如果这些值不匹配，EF Core 会假设另一个用户已执行冲突操作，并中止当前事务。
 
-另一个用户已执行与当前操作冲突的操作的情况称为_并发冲突_。
+另一个用户已执行与当前操作冲突的操作的情况被称为_并发冲突_。
 
 数据库提供程序负责实现并发令牌值的比较。
 
-在关系数据库上，EF Core 包括对任何 `UPDATE` 或 `DELETE` 语句的 `WHERE` 子句中的并发令牌值的检查。 执行这些语句后，EF Core 会读取受影响的行数。
+在关系数据库上，EF Core 会对任何 `UPDATE` 或 `DELETE` 语句的 `WHERE` 子句中的并发令牌值进行检查。 执行这些语句后，EF Core 会读取受影响的行数。
 
 如果未影响任何行，将检测到并发冲突，并且 EF Core 会引发 `DbUpdateConcurrencyException`。
 
-例如，我们可能希望将 `Person` 上的 `LastName` 配置为并发令牌。 则针对用户的任何更新操作将包括 `WHERE` 子句中的并发检查：
+例如，我们可能希望将 `Person` 的 `LastName` 配置为并发令牌。 这样，对 Person 的任何更新操作都将在 `WHERE` 子句中包括并发检查：
 
 ``` sql
 UPDATE [Person] SET [FirstName] = @p1
@@ -52,7 +52,7 @@ WHERE [PersonId] = @p0 AND [LastName] = @p2;
 
 此过程是_解决并发冲突_的一个示例。
 
-解决并发冲突涉及将当前 `DbContext` 中挂起的更改与数据库中的值合并。 要合并的值将根据应用程序的不同而有所不同，并且可能由用户输入指示。
+解决并发冲突涉及将当前 `DbContext` 中挂起的更改与数据库中的值进行合并。 要合并的值因应用程序而异并可由用户输入指示。
 
 **有三组值可用于帮助解决并发冲突：**
 
@@ -69,6 +69,6 @@ WHERE [PersonId] = @p0 AND [LastName] = @p2;
 3. 刷新并发令牌的原始值以反映数据库中的当前值。
 4. 重试该过程，直到不发生任何冲突。
 
-在下面的示例中，`Person.FirstName` 和 `Person.LastName` 设置为并发令牌。 在包括特定于应用程序的逻辑以选择要保存的值的位置中有 `// TODO:` 注释。
+在下面的示例中，将 `Person.FirstName` 和 `Person.LastName` 设置为并发令牌。 在包括应用程序特定逻辑以选择要保存的值的位置处有一条 `// TODO:` 注释。
 
 [!code-csharp[Main](../../../samples/core/Saving/Saving/Concurrency/Sample.cs?name=ConcurrencyHandlingCode&highlight=34-35)]

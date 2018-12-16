@@ -3,12 +3,13 @@ title: 自定义迁移操作-EF Core
 author: bricelam
 ms.author: bricelam
 ms.date: 11/07/2017
-ms.openlocfilehash: d715fe0408f25eb75c3160af79bb98fc87e41b17
-ms.sourcegitcommit: 269c8a1a457a9ad27b4026c22c4b1a76991fb360
+uid: core/managing-schemas/migrations/operations
+ms.openlocfilehash: 93de6ee1b2eda1875188ace6eda299260fbcc1fe
+ms.sourcegitcommit: 082946dcaa1ee5174e692dbfe53adeed40609c6a
 ms.translationtype: MT
 ms.contentlocale: zh-CN
-ms.lasthandoff: 09/18/2018
-ms.locfileid: "46284065"
+ms.lasthandoff: 11/06/2018
+ms.locfileid: "51028078"
 ---
 <a name="custom-migrations-operations"></a>自定义迁移操作
 ============================

@@ -1,14 +1,11 @@
+## <a name="microsoft-open-source-code-of-conduct"></a>Microsoft 开放源行为准则
 
-# Contributing
+此项目采用了 [Microsoft 开放源行为准则](https://opensource.microsoft.com/codeofconduct/)。
+有关详细信息，请参阅[行为准则常见问题解答](https://opensource.microsoft.com/codeofconduct/faq/)或联系 [opencode@microsoft.com](mailto:opencode@microsoft.com) 提出任何其他问题或意见。
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.microsoft.com.
+<a name="entity-framework-docs"></a>实体框架文档
+=====================
 
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
+此项目提供了 [docs.microsoft.com/ef](https://docs.microsoft.com/ef/) 的源。
 
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+接受拉取请求！ 但在提交拉取请求前，请[阅读参与指南](CONTRIBUTING.md)，其中包括如何在本地生成文档的相关信息，以及风格和结构指南。

@@ -3,12 +3,12 @@ title: Entity Framework 6 提供程序模型的 EF6
 author: divega
 ms.date: 06/27/2018
 ms.assetid: 066832F0-D51B-4655-8BE7-C983C557E0E4
-ms.openlocfilehash: de2e0a24f1b5f67d28cb831491b50d32f45af60a
-ms.sourcegitcommit: 269c8a1a457a9ad27b4026c22c4b1a76991fb360
+ms.openlocfilehash: d07a8689fe968bb1512095a59a61abc7ac346a31
+ms.sourcegitcommit: 5e11125c9b838ce356d673ef5504aec477321724
 ms.translationtype: MT
 ms.contentlocale: zh-CN
-ms.lasthandoff: 09/18/2018
-ms.locfileid: "46283922"
+ms.lasthandoff: 10/25/2018
+ms.locfileid: "50022319"
 ---
 # <a name="the-entity-framework-6-provider-model"></a>Entity Framework 6 提供程序模型
 
@@ -28,13 +28,13 @@ EF 提供程序实际上是特定于提供程序的服务定义的这些服务�
 
 ### <a name="dbproviderfactory"></a>DbProviderFactory
 
-EF 依赖于具有某一类型派生自[System.Data.Common.DbProviderFactory](https://msdn.microsoft.com/en-us/library/system.data.common.dbproviderfactory.aspx)执行的所有低级数据库访问。 DbProviderFactory 不是实际的 EF 的一部分，但却为 ADO.NET 提供程序提供的入口点的.NET Framework 中的类可用于通过 EF，其他 O/Rm 或直接由应用程序获取实例的连接、 命令、 参数和提供程序中的其他 ADO.NET 抽象无关的方式。 有关 DbProviderFactory 的详细信息中找到[ADO.NET 的 MSDN 文档](https://msdn.microsoft.com/en-us/library/a6cd7c08.aspx)。
+EF 依赖于具有某一类型派生自[System.Data.Common.DbProviderFactory](https://msdn.microsoft.com/library/system.data.common.dbproviderfactory.aspx)执行的所有低级数据库访问。 DbProviderFactory 不是实际的 EF 的一部分，但却为 ADO.NET 提供程序提供的入口点的.NET Framework 中的类可用于通过 EF，其他 O/Rm 或直接由应用程序获取实例的连接、 命令、 参数和提供程序中的其他 ADO.NET 抽象无关的方式。 有关 DbProviderFactory 的详细信息中找到[ADO.NET 的 MSDN 文档](https://msdn.microsoft.com/library/a6cd7c08.aspx)。
 
 ### <a name="dbproviderservices"></a>DbProviderServices
 
 EF 依赖于具有某一类型派生自 DbProviderServices 提供所需的 EF 基于 ADO.NET 提供程序已提供的功能的其他功能。 在较旧版本的 EF DbProviderServices 类是.NET Framework 的一部分，未找到 System.Data.Common 命名空间中。 此类从 EF6 现在是 EntityFramework.dll 的一部分并 System.Data.Entity.Core.Common 命名空间中。
 
-可以上找到有关 DbProviderServices 实现的基本功能的更多详细信息[MSDN](https://msdn.microsoft.com/en-us/library/ee789835.aspx)。 但请注意，截至撰写本文时此信息不会更新 ef6 尽管的大多数概念仍然有效。 SQL Server 和 SQL Server Compact 的 DbProviderServices 实现到还签入[开源 o d e b](https://github.com/aspnet/EntityFramework6/)并且可作为有用参考信息的其他实现。
+可以上找到有关 DbProviderServices 实现的基本功能的更多详细信息[MSDN](https://msdn.microsoft.com/library/ee789835.aspx)。 但请注意，截至撰写本文时此信息不会更新 ef6 尽管的大多数概念仍然有效。 SQL Server 和 SQL Server Compact 的 DbProviderServices 实现到还签入[开源 o d e b](https://github.com/aspnet/EntityFramework6/)并且可作为有用参考信息的其他实现。
 
 在较旧版本的 EF 中直接从 ADO.NET 提供程序中获取了要使用的 DbProviderServices 实现。 这是通过强制转换为 IServiceProvider，DbProviderFactory 和调用 GetService 方法。 这与 DbProviderFactory 紧密耦合的 EF 提供程序。 这种耦合阻止 EF 移出.NET Framework，因此为 EF6 这种紧密耦合已被删除，直接在应用程序的配置文件中或在基于代码的现已注册的 DbProviderServices 实现配置更多详细信息中所述_注册 DbProviderServices_下面一节。
 

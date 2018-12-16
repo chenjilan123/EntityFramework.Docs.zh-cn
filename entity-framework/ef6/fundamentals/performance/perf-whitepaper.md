@@ -3,12 +3,12 @@ title: EF4、 EF5 和 EF6 的性能注意事项
 author: divega
 ms.date: 10/23/2016
 ms.assetid: d6d5a465-6434-45fa-855d-5eb48c61a2ea
-ms.openlocfilehash: fb184fe8720b552a2050607bb17648f0413c31d1
-ms.sourcegitcommit: c568d33214fc25c76e02c8529a29da7a356b37b4
+ms.openlocfilehash: c87c1412cb23abf232663d7e4f44eef5f7818ea2
+ms.sourcegitcommit: 5e11125c9b838ce356d673ef5504aec477321724
 ms.translationtype: MT
 ms.contentlocale: zh-CN
-ms.lasthandoff: 09/30/2018
-ms.locfileid: "47459586"
+ms.lasthandoff: 10/25/2018
+ms.locfileid: "50022384"
 ---
 # <a name="performance-considerations-for-ef-4-5-and-6"></a>有关 EF 4、 5 和 6 的性能注意事项
 由 David Obando、 Eric Dettinger 等
@@ -33,7 +33,7 @@ ms.locfileid: "47459586"
 
 ## <a name="2-cold-vs-warm-query-execution"></a>2.冷 vs。热查询执行
 
-第一次针对给定的模型，进行任何查询的实体框架做了大量工作在后台加载和验证模型。 我们经常引用此第一个查询为"冷"查询。  针对已加载模型的进一步查询名为"热"的查询，并且快得多。
+第一次针对给定的模型，进行任何查询的实体框架做了大量工作在后台加载和验证模型。 我们经常引用此第一个查询为"冷"查询。  针对已加载模型的进一步查询名为"热"的查询，并且快得多。
 
 让时间的花费时使用实体框架中，执行查询的高级视图，请参阅操作 Entity Framework 6 中的改进。
 
@@ -145,7 +145,7 @@ ADO.NET 团队博客中发布了一文章，介绍如何为视图生成使用 T4
 
 时直接在应用程序的项目中包含您的模型并生成通过预生成事件或 T4 模板的视图，视图生成和验证会发生时重新生成项目时，即使该模型未更改。 如果将模型移动到单独的程序集并从应用程序的项目中引用它，可以无需重新生成包含模型的项目对应用程序进行其他更改。
 
-*注意：* 移动您的模型来分隔时程序集，请务必将该模型的连接字符串复制到客户端项目的应用程序配置文件。
+*注意：*  移动您的模型来分隔时程序集，请务必将该模型的连接字符串复制到客户端项目的应用程序配置文件。
 
 #### <a name="243-disable-validation-of-an-edmx-based-model"></a>2.4.3 禁用了基于 edmx 的模型的验证
 
@@ -180,10 +180,10 @@ EDMX 模型是在编译时验证，即使模型保持不变。 如果已验证�
 禁用自动检测更改的查找示例：
 
 ``` csharp
-    context.Configuration.AutoDetectChangesEnabled = false;
-    var product = context.Products.Find(productId);
-    context.Configuration.AutoDetectChangesEnabled = true;
-    ...
+    context.Configuration.AutoDetectChangesEnabled = false;
+    var product = context.Products.Find(productId);
+    context.Configuration.AutoDetectChangesEnabled = true;
+    ...
 ```
 
 您拥有使用 Find 方法时要考虑的是：
@@ -201,7 +201,7 @@ EDMX 模型是在编译时验证，即使模型保持不变。 如果已验证�
 
 ### <a name="32-query-plan-caching"></a>3.2 查询计划缓存
 
-第一次执行查询时，它将经历内部计划编译器来将概念的查询转换为存储命令 (例如，T-SQL 针对 SQL Server 运行时执行)。  如果启用了查询计划缓存，查询是在下次执行存储命令检索直接从查询计划缓存的执行，从而绕过计划编译器。
+第一次执行查询时，它将经历内部计划编译器来将概念的查询转换为存储命令 (例如，T-SQL 针对 SQL Server 运行时执行)。  如果启用了查询计划缓存，查询是在下次执行存储命令检索直接从查询计划缓存的执行，从而绕过计划编译器。
 
 查询计划缓存在同一 AppDomain 中的 ObjectContext 实例之间共享。 无需保存到一个 ObjectContext 实例，以便从查询计划缓存中受益。
 
@@ -211,22 +211,22 @@ EDMX 模型是在编译时验证，即使模型保持不变。 如果已验证�
 -   默认情况下，查询计划缓存可用于 Entity SQL 查询是否执行通过 EntityCommand 或 ObjectQuery。 它还默认情况下启用 linq to Entities 查询在实体框架在.NET 4.5 和 Entity Framework 6
     -   可以通过 （在 EntityCommand 或 ObjectQuery） EnablePlanCaching 属性设置为 false 禁用查询计划缓存。 例如：
 ``` csharp
-                    var query = from customer in context.Customer
-                                where customer.CustomerId == id
-                                select new
-                                {
-                                    customer.CustomerId,
-                                    customer.Name
-                                };
-                    ObjectQuery oQuery = query as ObjectQuery;
-                    oQuery.EnablePlanCaching = false;
+                    var query = from customer in context.Customer
+                                where customer.CustomerId == id
+                                select new
+                                {
+                                    customer.CustomerId,
+                                    customer.Name
+                                };
+                    ObjectQuery oQuery = query as ObjectQuery;
+                    oQuery.EnablePlanCaching = false;
 ```
 -   对于参数化查询，更改参数的值将仍命中缓存的查询。 但是，更改参数的方面 （例如，大小、 精度或规模） 都将遇到缓存中的不同项。
 -   使用实体 SQL，查询字符串时键的一部分。 在所有更改查询将导致不同的缓存条目，即使查询在功能上等效。 这包括更改大小写或空格。
 -   当使用 LINQ，查询的处理来生成键的一部分。 LINQ 表达式更改因此将生成不同的密钥。
 -   可以应用其他技术限制;有关更多详细信息，请参阅 Autocompiled 查询。
 
-#### <a name="322------cache-eviction-algorithm"></a>3.2.2 缓存逐出算法
+#### <a name="322-cache-eviction-algorithm"></a>3.2.2 缓存逐出算法
 
 了解内部算法可将帮助你找出时到启用或禁用查询计划缓存。 清理算法如下所示：
 
@@ -238,11 +238,11 @@ EDMX 模型是在编译时验证，即使模型保持不变。 如果已验证�
 
 请注意，缓存逐出计时器触发事件时在缓存中，有 800 实体但缓存仅扫频 60 秒后此计时器已启动。 这意味着，最多 60 秒缓存可能会增长得非常大。
 
-#### <a name="323-------test-metrics-demonstrating-query-plan-caching-performance"></a>3.2.3 测试演示查询计划缓存性能指标
+#### <a name="323-test-metrics-demonstrating-query-plan-caching-performance"></a>3.2.3 测试演示查询计划缓存性能指标
 
 若要演示的查询计划缓存在应用程序的性能效果，我们执行测试，我们执行多个针对 Navision 模型的 Entity SQL 查询。 请参阅的附录 Navision 模型和执行的查询的类型的说明。 在此测试中，我们首先循环访问查询的列表并执行每个一次将其添加到缓存中，（如果缓存已启用）。 此步骤是 untimed。 接下来，我们睡眠状态超过 60 秒，以允许缓存扫描结合使用以执行; 的主线程最后，我们循环访问列表第 2 个时间来执行缓存的查询。 此外，他 SQL Server 计划高速缓存刷新之前每个集的查询执行，以便我们获得准确的时间反映由查询计划缓存的优势。
 
-##### <a name="3231-------test-results"></a>3.2.3.1 测试结果
+##### <a name="3231-test-results"></a>3.2.3.1 测试结果
 
 | 测试                                                                   | EF5 没有缓存 | EF5 缓存 | EF6 不缓存 | EF6 缓存 |
 |:-----------------------------------------------------------------------|:-------------|:-----------|:-------------|:-----------|
@@ -266,7 +266,7 @@ AggregatingSubtotals 查询是最复杂的与我们测试的查询。 按预期�
 
 有两个您需要执行使用 CompiledQuery，即要求使用静态实例和这些问题所拥有的可组合性时的注意事项。 以下是这些两个注意事项的详细说明。
 
-#### <a name="331-------use-static-compiledquery-instances"></a>3.3.1 使用静态 CompiledQuery 实例
+#### <a name="331-use-static-compiledquery-instances"></a>3.3.1 使用静态 CompiledQuery 实例
 
 编译 LINQ 查询是一个耗时的过程，因为我们不希望每次我们需要从数据库提取数据时执行此操作。 CompiledQuery 实例可以进行一次编译和运行多次，但必须要小心操作和采购以重复使用相同的 CompiledQuery 实例而不是反复地编译每次。 使用静态成员来存储 CompiledQuery 实例将成为必需的;否则不会看到任何权益。
 
@@ -292,7 +292,7 @@ AggregatingSubtotals 查询是最复杂的与我们测试的查询。 按预期�
 
 在这种情况下，将动态创建新的 CompiledQuery 实例，每次调用的方法。 而不是通过从查询计划缓存中检索存储命令来查看性能优势，CompiledQuery 会通过计划编译器每次创建一个新实例。 事实上，您将为污染查询计划缓存的新的 CompiledQuery 项，每次调用的方法。
 
-相反，你想要创建的已编译的查询，一个静态实例，以便每次调用该方法时所调用同一个已编译的查询。 一种方法这是通过将 CompiledQuery 实例添加为对象上下文的成员。  然后可以操作小更简洁的帮助器方法通过访问 CompiledQuery:
+相反，你想要创建的已编译的查询，一个静态实例，以便每次调用该方法时所调用同一个已编译的查询。 一种方法这是通过将 CompiledQuery 实例添加为对象上下文的成员。  然后可以操作小更简洁的帮助器方法通过访问 CompiledQuery:
 
 ``` csharp
     public partial class NorthwindEntities : ObjectContext
@@ -311,10 +311,10 @@ AggregatingSubtotals 查询是最复杂的与我们测试的查询。 按预期�
 此帮助器方法会调用，如下所示：
 
 ``` csharp
-    this.productsGrid.DataSource = context.GetProductsForCategory(selectedCategory);
+    this.productsGrid.DataSource = context.GetProductsForCategory(selectedCategory);
 ```
 
-#### <a name="332-------composing-over-a-compiledquery"></a>3.3.2 撰写 CompiledQuery 转移
+#### <a name="332-composing-over-a-compiledquery"></a>3.3.2 撰写 CompiledQuery 转移
 
 用于任何 LINQ 查询组合的功能是非常有用;若要执行此操作，您只需调用方法后 IQueryable 如*skip （)* 或*count （)*。 但是，所以本质上来说返回一个新的 IQueryable 对象。 虽然没有执行任何操作，使您从技术上讲不再通过 CompiledQuery 撰写，但这样做将导致生成新的 IQueryable 对象，需要再次传递通过计划编译器。
 
@@ -345,7 +345,7 @@ AggregatingSubtotals 查询是最复杂的与我们测试的查询。 按预期�
     }
 ```
 
- 若要避免此重新编译，可以重写 CompiledQuery 要考虑的可能的筛选器：
+ 若要避免此重新编译，可以重写 CompiledQuery 要考虑的可能的筛选器：
 
 ``` csharp
     private static readonly Func<NorthwindEntities, int, int?, string, IQueryable<Customer>> customersForEmployeeWithFiltersCQ = CompiledQuery.Compile(
@@ -377,7 +377,7 @@ AggregatingSubtotals 查询是最复杂的与我们测试的查询。 按预期�
     }
 ```
 
- 此处的影响是生成的存储命令始终具有带 null 检查，筛选器，但这些应是要优化的数据库服务器相当简单：
+ 此处的影响是生成的存储命令始终具有带 null 检查，筛选器，但这些应是要优化的数据库服务器相当简单：
 
 ``` SQL
 ...
@@ -572,7 +572,7 @@ using (var context = new MyContext())
 
 ### <a name="51-disabling-change-tracking-to-reduce-state-management-overhead"></a>5.1 禁用更改跟踪来减少管理开销状态
 
-如果您在只读的情况下，并且想要避免加载到 ObjectStateManager 对象的开销，您可以发出"不跟踪"的查询。  可以在查询级别禁用更改跟踪。
+如果您在只读的情况下，并且想要避免加载到 ObjectStateManager 对象的开销，您可以发出"不跟踪"的查询。  可以在查询级别禁用更改跟踪。
 
 但请注意，通过禁用更改跟踪您会有效地关闭对象缓存。 在查询实体时，我们不能通过从 ObjectStateManager 中拉取之前具体化查询结果中跳过具体化。 如果重复查询上相同的上下文相同的实体，您实际上可能会看到从启用更改跟踪中受益的性能。
 
@@ -610,7 +610,7 @@ using (var context = new MyContext())
                                 select p;
 ```
 
-### <a name="52-test-metrics-demonstrating-the-performance-benefit-of-notracking-queries"></a>5.2 测试演示 NoTracking 查询的性能优势的度量值
+### <a name="52test-metrics-demonstrating-the-performance-benefit-of-notracking-queries"></a>5.2 测试演示 NoTracking 查询的性能优势的度量值
 
 在此测试我们将介绍但代价是通过比较跟踪对 Navision 模型 NoTracking 查询填充 ObjectStateManager。 请参阅的附录 Navision 模型和执行的查询的类型的说明。 在此测试中，我们循环访问查询的列表，并执行每个一次。 我们已使用默认合并选项的"仅附加"运行测试、 一次使用 NoTracking 查询和一次的两种变体。 我们运行 3 次的每个变体，并需要在运行的平均值。 测试之间我们清除 SQL Server 上的查询缓存，并将 tempdb 收缩通过运行以下命令：
 
@@ -643,7 +643,7 @@ using (var context = new MyContext())
 -   SqlQuery。
 -   CompiledQuery。
 
-### <a name="61-------linq-to-entities-queries"></a>6.1 LINQ to Entities 查询
+### <a name="61-linq-to-entities-queries"></a>6.1 LINQ to Entities 查询
 
 ``` csharp
 var q = context.Products.Where(p => p.Category.CategoryName == "Beverages");
@@ -662,7 +662,7 @@ var q = context.Products.Where(p => p.Category.CategoryName == "Beverages");
     -   OUTER JOIN 查询使用 DefaultIfEmpty 模式会导致更复杂查询的速度比在实体 SQL 的简单 OUTER JOIN 语句。
     -   仍不能使用 LIKE 与常规模式匹配。
 
-### <a name="62-------no-tracking-linq-to-entities-queries"></a>6.2 无跟踪 LINQ to Entities 查询
+### <a name="62-no-tracking-linq-to-entities-queries"></a>6.2 无跟踪 LINQ to Entities 查询
 
 当上下文派生 ObjectContext:
 
@@ -699,7 +699,7 @@ var q = context.Products.Where(p => p.Category.CategoryName == "Beverages").Sele
 
 此特定查询未显式指定正在 NoTracking，但由于它不具体化不跟踪具有已知的对象状态管理器然后实例化的结果的类型。
 
-### <a name="63-------entity-sql-over-an-objectquery"></a>6.3 实体 ObjectQuery 上的 SQL
+### <a name="63-entity-sql-over-an-objectquery"></a>6.3 实体 ObjectQuery 上的 SQL
 
 ``` csharp
 ObjectQuery<Product> products = context.Products.Where("it.Category.CategoryName = 'Beverages'");
@@ -715,7 +715,7 @@ ObjectQuery<Product> products = context.Products.Where("it.Category.CategoryName
 
 -   涉及到文本的查询字符串，它们是更容易出现用户错误比内置于语言的查询构造。
 
-### <a name="64-------entity-sql-over-an-entity-command"></a>6.4 实体的实体命令上的 SQL
+### <a name="64-entity-sql-over-an-entity-command"></a>6.4 实体的实体命令上的 SQL
 
 ``` csharp
 EntityCommand cmd = eConn.CreateCommand();
@@ -740,7 +740,7 @@ using (EntityDataReader reader = cmd.ExecuteReader(CommandBehavior.SequentialAcc
 -   不适用于 CUD 操作。
 -   结果自动未具体化，并且必须从数据读取器读取。
 
-### <a name="65-------sqlquery-and-executestorequery"></a>6.5 SqlQuery 和 ExecuteStoreQuery
+### <a name="65-sqlquery-and-executestorequery"></a>6.5 SqlQuery 和 ExecuteStoreQuery
 
 在数据库上的 SqlQuery:
 
@@ -778,7 +778,7 @@ var beverages = context.ExecuteStoreQuery<Product>(
 -   通过使用存储区语义而不概念语义情况下，查询绑定到特定的后端。
 -   当存在继承时，精心设计的查询所需的请求的类型的映射条件。
 
-### <a name="66-------compiledquery"></a>6.6 CompiledQuery
+### <a name="66-compiledquery"></a>6.6 CompiledQuery
 
 ``` csharp
 private static readonly Func<NorthwindEntities, string, IQueryable<Product>> productsForCategoryCQ = CompiledQuery.Compile(
@@ -801,7 +801,7 @@ var q = context.InvokeProductsForCategoryCQ("Beverages");
 -   在撰写基于已编译查询时，性能改进会丢失。
 -   某些 LINQ 查询不能被编写为 CompiledQuery-例如，匿名类型的投影。
 
-### <a name="67-------performance-comparison-of-different-query-options"></a>6.7 性能比较的不同的查询选项
+### <a name="67-performance-comparison-of-different-query-options"></a>6.7 性能比较的不同的查询选项
 
 已不定时上下文创建的简单 microbenchmarks 已放置到测试。 查询的非缓存在受控环境中的实体集 5000 倍，我们测量。 这些数字是要执行但出现警告： 它们不反映实际数字生成由应用程序，而它们是非常准确多少不同的查询选项进行比较时没有性能差异的度量值同类对象，不包括创建新的上下文的成本。
 
@@ -863,7 +863,7 @@ Microbenchmarks 都对代码中的微小变化非常敏感。 在这种情况下
 
 ## <a name="7-design-time-performance-considerations"></a>7 设计时间性能注意事项
 
-### <a name="71-------inheritance-strategies"></a>7.1 继承策略
+### <a name="71-inheritance-strategies"></a>7.1 继承策略
 
 使用实体框架时的另一个性能注意事项是你使用的继承策略。 实体框架支持 3 种基本类型的继承和它们二者的组合：
 
@@ -871,11 +871,11 @@ Microbenchmarks 都对代码中的微小变化非常敏感。 在这种情况下
 -   表每个类型 (TPT) – 其中每个类型具有其自己的表中该数据库。子表只定义父表不包含的列。
 -   表每个类 (TPC) – 其中每个类型具有自己的完整表中该数据库。子表定义所有字段，包括那些在父类型中定义。
 
-如果您的模型使用 TPT 继承，生成的查询将比使用其他继承策略，这可能导致存储区上的执行时间较长上生成更复杂。  它通常需要花费更长，以通过 TPT 模型生成查询并具体化的对象。
+如果您的模型使用 TPT 继承，生成的查询将比使用其他继承策略，这可能导致存储区上的执行时间较长上生成更复杂。  它通常需要花费更长，以通过 TPT 模型生成查询并具体化的对象。
 
 请参阅"性能注意事项时在实体框架中使用 （每种类型的表） TPT 继承"MSDN 博客文章： \<http://blogs.msdn.com/b/adonet/archive/2010/08/17/performance-considerations-when-using-tpt-table-per-type-inheritance-in-the-entity-framework.aspx>。
 
-#### <a name="711-------avoiding-tpt-in-model-first-or-code-first-applications"></a>7.1.1 Model First 或 Code First 应用程序中避免 TPT
+#### <a name="711-avoiding-tpt-in-model-first-or-code-first-applications"></a>7.1.1 Model First 或 Code First 应用程序中避免 TPT
 
 通过具有 TPT 架构的现有数据库创建模型，你没有在很多选项。 但在创建时使用 Model First 或 Code First 的应用程序，应避免性能问题的 TPT 继承。
 
@@ -883,7 +883,7 @@ Microbenchmarks 都对代码中的微小变化非常敏感。 在这种情况下
 
 在使用 Code First 配置继承模型的映射，EF 将使用 TPH 默认情况下，因此继承层次结构中的所有实体将都映射到同一个表。 请参阅 MSDN 杂志 》 中的"代码第一个中实体 Framework4.1"项目的"映射的 Fluent API"一节 ( [http://msdn.microsoft.com/magazine/hh126815.aspx](https://msdn.microsoft.com/magazine/hh126815.aspx)) 的更多详细信息。
 
-### <a name="72-------upgrading-from-ef4-to-improve-model-generation-time"></a>7.2 升级从 EF4 以提高模型生成时间
+### <a name="72-upgrading-from-ef4-to-improve-model-generation-time"></a>7.2 升级从 EF4 以提高模型生成时间
 
 安装 Visual Studio 2010 SP1 时，用于生成存储层 (SSDL) 的算法的特定于 SQL Server 的改进是模型的在 Entity Framework 5 和 6，并作为对 Entity Framework 4 的更新可用。 以下测试结果时生成非常大的模型，在这种情况下 Navision 模型演示改进。 更多详细信息，请参阅附录 C。
 
@@ -899,13 +899,13 @@ Microbenchmarks 都对代码中的微小变化非常敏感。 在这种情况下
 
 值得注意是，生成 SSDL 时, 负载几乎完全所用的 SQL 服务器上，等待客户端开发计算机时，结果才会返回从服务器空闲。 Dba 应特别感谢此项改进。 它也是值得注意成本模型生成的实质上是整个现在采用视图生成中的位置。
 
-### <a name="73-------splitting-large-models-with-database-first-and-model-first"></a>7.3 首先拆分与数据库的大型模型和模型优先
+### <a name="73-splitting-large-models-with-database-first-and-model-first"></a>7.3 首先拆分与数据库的大型模型和模型优先
 
 随着模型大小的增加，设计器图面变得混乱且难以使用。 我们通常认为具有 300 多个实体太大而无法有效地使用设计器的模型。 下面的博客文章介绍了有关拆分大型模型的多个选项： \<http://blogs.msdn.com/b/adonet/archive/2008/11/25/working-with-large-models-in-entity-framework-part-2.aspx>。
 
 开机自检编写实体框架的第一个版本，但步骤仍然适用。
 
-### <a name="74-------performance-considerations-with-the-entity-data-source-control"></a>7.4 实体数据源控件的性能注意事项
+### <a name="74-performance-considerations-with-the-entity-data-source-control"></a>7.4 实体数据源控件的性能注意事项
 
 我们已经看到在多线程的性能和压力测试的情况下，使用 EntityDataSource 控件的 web 应用程序的性能会降低显著。 根本原因是 EntityDataSource Web 应用程序，以发现要用作实体的类型引用的程序集上反复调用 MetadataWorkspace.LoadFromAssembly。
 
@@ -913,7 +913,7 @@ Microbenchmarks 都对代码中的微小变化非常敏感。 在这种情况下
 
 设置 ContextTypeName 字段还可以防止其中 EntityDataSource.NET 4.0 中的时，会引发出现 ReflectionTypeLoadException 它不能从通过反射程序集加载的类型的功能问题。 在.NET 4.5 中已修复此问题。
 
-### <a name="75-------poco-entities-and-change-tracking-proxies"></a>7.5 POCO 实体和更改跟踪代理
+### <a name="75-poco-entities-and-change-tracking-proxies"></a>7.5 POCO 实体和更改跟踪代理
 
 实体框架，可自定义数据类与数据模型一起使用而无需对数据类本身进行任何修改。 这意味着可以将“纯旧式”CLR 对象 (POCO)（例如，现有的域对象）与数据模型一起使用。 这些 POCO 数据类 （也称为持久性未知对象），其映射到实体数据模型中定义的支持的大多数相同的查询、 插入、 更新，和删除实体类型由 Entity Data Model 工具生成的行为。
 
@@ -1089,7 +1089,7 @@ WHERE [Extent1].[CustomerID] = @EntityKeyValue1',N'@EntityKeyValue1 nchar(5)',@E
 | 姑且不论您的数据库执行你的代码？ （增加了的网络延迟）  | **不**-时的网络延迟不是问题，使用延迟加载可以简化你的代码。 请记住你的应用程序拓扑可能会更改，因此不需要数据库邻近理所当然的。 <br/> <br/> **是**-网络问题时，仅可以决定更好地适合您的方案。 通常将预先加载是更好，因为它需要往返次数较少。                                                                                                                                                                                                      |
 
 
-#### <a name="822-------performance-concerns-with-multiple-includes"></a>8.2.2 使用多个包括性能问题
+#### <a name="822-performance-concerns-with-multiple-includes"></a>8.2.2 使用多个包括性能问题
 
 如果我们听到涉及服务器响应时间问题的性能问题，问题的原因通常是具有多个包含语句的查询。 虽然在查询中包括相关的实体很强大，务必了解在后台发生的事情。
 
@@ -1147,7 +1147,7 @@ using (NorthwindEntities context = new NorthwindEntities())
 
 ## <a name="9-other-considerations"></a>9 其他注意事项
 
-### <a name="91------server-garbage-collection"></a>9.1 服务器垃圾回收
+### <a name="91-server-garbage-collection"></a>9.1 服务器垃圾回收
 
 某些用户可能会遇到限制的并行度，垃圾回收器未正确配置时收到意外的资源争用。 每次在多线程方案中，使用 EF 或任何应用程序中的类似于服务器端的系统，请确保启用服务器垃圾回收。 通过在应用程序配置文件中的简单设置完成此操作：
 
@@ -1162,7 +1162,7 @@ using (NorthwindEntities context = new NorthwindEntities())
 
 这应减少线程争用并提高吞吐量最多 30 %cpu 饱和方案中。 概括地说，您始终应测试您的应用程序的行为方式使用经典的垃圾回收 （，更好地适用于 UI 和客户端端方案） 以及服务器垃圾回收。
 
-### <a name="92------autodetectchanges"></a>9.2 AutoDetectChanges
+### <a name="92-autodetectchanges"></a>9.2 AutoDetectChanges
 
 前面曾提到，实体框架可能会显示性能问题时对象缓存中有多个实体。 某些操作，如添加、 删除、 查找、 条目和 SaveChanges，触发调用 DetectChanges，这可能会占用大量 CPU 基于对象缓存已成为多大。 这样做的原因是对象缓存和对象状态管理器尝试将保持为同步尽可能执行到上下文，以便生成的数据保证可正确了很多情况下每个操作。
 
@@ -1183,11 +1183,11 @@ finally
 
 在关闭 AutoDetectChanges 之前, 是最好的了解，这可能会导致实体框架可以在其无法跟踪的更改的实体上所发生的某些信息。 如果处理不正确，这可能导致你的应用程序上的数据不一致。 关闭 AutoDetectChanges 的详细信息，请阅读\<\ http://blog.oneunicorn.com/2012/03/12/secrets-of-detectchanges-part-3-switching-off-automatic-detectchanges/>。
 
-### <a name="93------context-per-request"></a>9.3 每个请求上下文
+### <a name="93-context-per-request"></a>9.3 每个请求上下文
 
 实体框架的上下文是为了用作生存期较短实例以便提供最佳性能体验。 上下文都将是短生存期和丢弃的项，并且这种情况下已实现非常轻型的软件和 reutilize 只要有可能的元数据。 在 web 方案中是一定要记住这一点并不具有对多个单个请求的持续时间的上下文。 同样，在非 web 方案中，上下文应放弃根据您对不同级别的缓存在实体框架的理解。 通常情况下，一个应避免必须在整个生命周期内的应用程序，以及每个线程的上下文和静态上下文的上下文实例。
 
-### <a name="94------database-null-semantics"></a>9.4 数据库 null 语义
+### <a name="94-database-null-semantics"></a>9.4 数据库 null 语义
 
 默认情况下的实体框架将生成具有 C 的 SQL 代码\#null 比较语义。 请考虑下面的示例查询：
 
@@ -1224,18 +1224,18 @@ finally
 
 在上面的示例查询中，性能差异是在受控环境中运行 microbenchmark 小于 2%。
 
-### <a name="95------async"></a>9.5 异步
+### <a name="95-async"></a>9.5 异步
 
 异步操作时运行在.NET 4.5 或更高版本的 entity Framework 6 引入了支持。 大多数情况下，具有 IO 的应用程序相关的争用将受益于最多使用异步查询和保存操作。 如果你的应用程序不会受到 IO 争用，使用 async 将在最佳情况下，以同步方式运行和返回结果，在相同的时间量为同步调用，或在最坏情况下，只需推迟到一个异步任务的执行并添加额外 tim完成你的方案的 e。
 
 有关如何异步编程工作，可帮助您决定是否异步会提高应用程序的性能所访问的信息[http://msdn.microsoft.com/library/hh191443.aspx](https://msdn.microsoft.com/library/hh191443.aspx)。 有关使用实体框架的异步操作的详细信息，请参阅[异步查询和保存](~/ef6/fundamentals/async.md
 )。
 
-### <a name="96------ngen"></a>9.6 NGEN
+### <a name="96-ngen"></a>9.6 NGEN
 
 Entity Framework 6 不能在默认安装.NET framework 中。 在这种情况下，实体框架程序集不是默认情况下，这意味着所有实体框架代码都受到相同的 JIT'ing 成本与任何其他 MSIL 程序集的 NGEN 'd。 这可能会降低 F5 体验，同时开发和生产环境中的应用程序的冷启动。 为了降低 JIT'ing 的 CPU 和内存成本最好是的 NGEN 映像作为相应的实体框架。 有关如何改进使用 NGEN Entity Framework 6 的启动性能的详细信息，请参阅[使用 NGen 提高启动性能](~/ef6/fundamentals/performance/ngen.md)。
 
-### <a name="97------code-first-versus-edmx"></a>9.7 代码优先与 EDMX
+### <a name="97-code-first-versus-edmx"></a>9.7 代码优先与 EDMX
 
 有关面向对象编程和通过概念模型 （对象）、 存储架构 （数据库） 和之间的映射的内存中表示的关系数据库之间的阻抗不匹配问题的实体框架原因两个。 此元数据的实体数据模型或 EDM 为调用短。 此 EDM 中，从实体框架将派生自视图往返数据到数据库的内存中对象和备份。
 
@@ -1251,11 +1251,11 @@ Entity Framework 6 不能在默认安装.NET framework 中。 在这种情况下
 
 如果在使用实体框架的性能问题，可以使用类似于内置到 Visual Studio 探查器以查看你的应用程序上花费其时间。 这是我们用于生成饼图"探讨 ADO.NET 实体框架的第 1 部分的性能"博客文章中的工具 ( \<http://blogs.msdn.com/b/adonet/archive/2008/02/04/exploring-the-performance-of-the-ado-net-entity-framework-part-1.aspx>) ，可显示实体框架何处消耗在冷和热查询过程及其时间。
 
-由数据和建模客户顾问团队编写的 《 使用 Visual Studio 2010 Profiler 分析 Entity Framework 》 博客文章显示了如何在使用探查器来调查性能问题的一个实际示例。  \<http://blogs.msdn.com/b/dmcat/archive/2010/04/30/profiling-entity-framework-using-the-visual-studio-2010-profiler.aspx>. 此文章针对 windows 应用程序的编写。 如果你需要分析 web 应用程序的 Windows 性能记录器 (WPR) 和 Windows Performance Analyzer (WPA) 工具可能效果更佳从 Visual Studio 的工作。 WPR 和 WPA 是 Windows 性能工具包附带 Windows 评估和部署工具包的一部分 ( [http://www.microsoft.com/en-US/download/details.aspx?id=39982](https://www.microsoft.com/en-US/download/details.aspx?id=39982))。
+由数据和建模客户顾问团队编写的 《 使用 Visual Studio 2010 Profiler 分析 Entity Framework 》 博客文章显示了如何在使用探查器来调查性能问题的一个实际示例。  \<http://blogs.msdn.com/b/dmcat/archive/2010/04/30/profiling-entity-framework-using-the-visual-studio-2010-profiler.aspx>. 此文章针对 windows 应用程序的编写。 如果你需要分析 web 应用程序的 Windows 性能记录器 (WPR) 和 Windows Performance Analyzer (WPA) 工具可能效果更佳从 Visual Studio 的工作。 WPR 和 WPA 是 Windows 性能工具包附带 Windows 评估和部署工具包的一部分 ( [http://www.microsoft.com/download/details.aspx?id=39982](https://www.microsoft.com/download/details.aspx?id=39982))。
 
 ### <a name="102-applicationdatabase-profiling"></a>10.2 应用程序/数据库分析
 
-内置到 Visual Studio 探查器等工具告诉你的应用程序上花费时间。  另一种类型的探查器是可用的执行动态分析运行的应用程序，在生产或根据需要，预生产中，并查找常见缺陷和反模式的数据库访问权限。
+内置到 Visual Studio 探查器等工具告诉你的应用程序上花费时间。  另一种类型的探查器是可用的执行动态分析运行的应用程序，在生产或根据需要，预生产中，并查找常见缺陷和反模式的数据库访问权限。
 
 两个地区销售的探查器是实体框架 Profiler ( \<http://efprof.com>) ORMProfiler 和 ( \<http://ormprofiler.com>)。
 
@@ -1298,9 +1298,9 @@ Entity Framework 6 不能在默认安装.NET framework 中。 在这种情况下
 
 此环境使用具有客户端应用程序从一台计算机上数据库的计算机 2 的安装程序。 机位于同一机架中，因此网络延迟是相对较低，但比单计算机环境更真实。
 
-#### <a name="1111-------app-server"></a>11.1.1 应用服务器
+#### <a name="1111-app-server"></a>11.1.1 应用服务器
 
-##### <a name="11111------software-environment"></a>11.1.1.1 软件环境
+##### <a name="11111-software-environment"></a>11.1.1.1 软件环境
 
 -   实体框架 4 软件环境
     -   OS 名称： Windows Server 2008 R2 Enterprise SP1。
@@ -1310,26 +1310,26 @@ Entity Framework 6 不能在默认安装.NET framework 中。 在这种情况下
     -   OS 名称： Windows 8.1 企业版
     -   Visual Studio 2013 – Ultimate。
 
-##### <a name="11112------hardware-environment"></a>11.1.1.2 硬件环境
+##### <a name="11112-hardware-environment"></a>11.1.1.2 硬件环境
 
 -   双处理器: @ 2.27 GHz intel （) 至强® CPU L5520 W3530、 2261 Mhz8 g h z、 4 个核心，84 逻辑处理器。
 -   2412 GB RamRAM。
 -   136 GB SCSI250GB SATA 7200 rpm 3 GB/s 驱动器将拆分为 4 个分区。
 
-#### <a name="1112-------db-server"></a>11.1.2 DB 服务器
+#### <a name="1112-db-server"></a>11.1.2 DB 服务器
 
-##### <a name="11121------software-environment"></a>11.1.2.1 软件环境
+##### <a name="11121-software-environment"></a>11.1.2.1 软件环境
 
 -   OS 名称： Windows Server 2008 R28.1 Enterprise SP1。
 -   SQL Server 2008 R22012。
 
-##### <a name="11122------hardware-environment"></a>11.1.2.2 硬件环境
+##### <a name="11122-hardware-environment"></a>11.1.2.2 硬件环境
 
 -   单处理器： 2.27 GHz intel （) 至强® CPU L5520、 2261 MhzES-1620 0 @ 3.60 g h z、 4 个核心、 8 逻辑处理器。
 -   824 GB RamRAM。
 -   465 GB ATA500GB SATA 7200 rpm 6 GB/s 驱动器将拆分为 4 个分区。
 
-### <a name="112------b-query-performance-comparison-tests"></a>11.2 B.查询性能比较测试
+### <a name="112-b-query-performance-comparison-tests"></a>11.2 B.查询性能比较测试
 
 Northwind 模型用于执行这些测试。 它是使用实体框架设计器从数据库生成的。 然后，使用以下代码来比较查询执行选项的性能：
 
@@ -1519,7 +1519,7 @@ Navision 数据库是用于演示 Microsoft Dynamics – 导航的大型数据�
   </Query>
 ```
 
-##### <a name="11312-singleaggregating"></a>11.3.1.2 SingleAggregating
+##### <a name="11312singleaggregating"></a>11.3.1.2 SingleAggregating
 
 具有多个聚合，但没有小计 （单个查询） 的正常 BI 查询
 
@@ -1540,7 +1540,7 @@ Navision 数据库是用于演示 Microsoft Dynamics – 导航的大型数据�
   </Function>
 ```
 
-##### <a name="11313-aggregatingsubtotals"></a>11.3.1.3 AggregatingSubtotals
+##### <a name="11313aggregatingsubtotals"></a>11.3.1.3 AggregatingSubtotals
 
 具有聚合和小计 （通过所有的并集） 的 BI 查询
 

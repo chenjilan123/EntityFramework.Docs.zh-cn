@@ -4,28 +4,28 @@ author: rowanmiller
 ms.date: 10/27/2016
 ms.assetid: d7a22b5a-4c5b-4e3b-9897-4d7320fcd13f
 uid: core/miscellaneous/configuring-dbcontext
-ms.openlocfilehash: 393349c05ffaf42c6d2520e73abce23def6becc0
-ms.sourcegitcommit: dadee5905ada9ecdbae28363a682950383ce3e10
+ms.openlocfilehash: f5a9ae17471391442170d8c40264e4db6922cb08
+ms.sourcegitcommit: 39080d38e1adea90db741257e60dc0e7ed08aa82
 ms.translationtype: MT
 ms.contentlocale: zh-CN
-ms.lasthandoff: 08/27/2018
-ms.locfileid: "42995933"
+ms.lasthandoff: 11/03/2018
+ms.locfileid: "50979997"
 ---
 # <a name="configuring-a-dbcontext"></a>配置 DbContext
 
-这篇文章演示用于配置基本模式`DbContext`通过`DbContextOptions`连接到使用特定的 EF Core 提供程序和可选行为的数据库。
+本文演示通过 `DbContextOptions` 配置 `DbContext` 以使用特定的 EF Core 提供程序和可选行为来连接到数据库的基本模式。
 
 ## <a name="design-time-dbcontext-configuration"></a>设计时 DbContext 配置
 
-EF Core 设计时工具如[迁移](xref:core/managing-schemas/migrations/index)需要能够发现和创建的工作实例`DbContext`以收集有关应用程序的实体类型以及它们如何映射到数据库架构的详细信息的类型。 此过程可以为自动，只要该工具可以轻松地创建`DbContext`，会将其配置同样到它如何将配置在运行时的方式。
+EF Core 设计时工具（如[迁移](xref:core/managing-schemas/migrations/index)）需要能够发现和创建 `DbContext` 类型的工作实例，以便收集有关应用程序实体类型及其如何映射到数据库架构的详细信息。 此过程可以自动执行，只要该工具可以轻松创建 `DbContext` 并使其与在运行时采用相似的配置方式。
 
 尽管提供了必要的配置信息到任何模式`DbContext`可在运行时，需要使用的工具`DbContext`在设计时仅适用于有限数量的模式。 这些内容中更详细地介绍[设计时上下文创建](xref:core/miscellaneous/cli/dbcontext-creation)部分。
 
 ## <a name="configuring-dbcontextoptions"></a>配置 DbContextOptions
 
-`DbContext` 必须具有的实例`DbContextOptions`才能执行任何工作。 `DbContextOptions`实例执行的配置信息如：
+`DbContext` 必须具有 `DbContextOptions` 的实例才能执行工作。 `DbContextOptions` 实例包含如下配置信息：
 
-- 数据库提供程序，若要使用，通常情况下调用的方法，如选择`UseSqlServer`或 `UseSqlite`
+- 数据库提供程序，若要使用，通常选择通过调用的方法，如`UseSqlServer`或`UseSqlite`。 这些扩展方法需要相应的提供程序包，如`Microsoft.EntityFrameworkCore.SqlServer`或`Microsoft.EntityFrameworkCore.Sqlite`。 中定义的方法`Microsoft.EntityFrameworkCore`命名空间。
 - 任何必要的连接字符串或标识符的数据库实例中，通常作为参数传递到上述提供程序选择方法
 - 任何提供程序级别的可选行为选择器，通常还链接到提供程序选择方法调用中
 - 任何常规 EF Core 行为选择器，通常链接之后或之前提供程序选择器方法
@@ -39,7 +39,7 @@ optionsBuilder
 ```
 
 > [!NOTE]  
-> 提供程序选择器方法和上面提到的其他行为选择器方法是扩展方法上`DbContextOptions`或特定于提供程序的选项类。 若要有权访问这些扩展方法，可能需要具有一个命名空间 (通常`Microsoft.EntityFrameworkCore`) 中的作用域以及在项目中包含其他包依赖项。
+> 上面提到的提供程序选择器方法和其他行为选择器方法是 `DbContextOptions` 或特定于提供程序的选项类上的扩展方法。 若要访问这些扩展方法，可能需要具有定义域内的命名空间（通常为 `Microsoft.EntityFrameworkCore`）并在项目中包含其他包依赖关系。
 
 `DbContextOptions`可以提供给`DbContext`通过重写`OnConfiguring`方法或构造函数参数通过从外部。
 
@@ -164,6 +164,6 @@ var options = serviceProvider.GetService<DbContextOptions<BloggingContext>>();
 
 ## <a name="more-reading"></a>详细阅读
 
-* 读取[首先使用 ASP.NET Core](../get-started/aspnetcore/index.md)有关 ASP.NET Core 中使用 EF 的详细信息。
-* 读取[依赖关系注入](https://docs.microsoft.com/aspnet/core/fundamentals/dependency-injection)若要了解有关使用 DI 的详细信息。
-* 读取[测试](testing/index.md)有关详细信息。
+* 阅读 [ASP.NET Core 入门](../get-started/aspnetcore/index.md)，了解有关配合使用 ASP.NET Core 和 EF 的详细信息。
+* 阅读[依赖关系注入](https://docs.microsoft.com/aspnet/core/fundamentals/dependency-injection)，了解有关使用 DI 的详细信息。
+* 阅读[测试](testing/index.md)了解详细信息。

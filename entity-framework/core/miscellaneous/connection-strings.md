@@ -4,16 +4,16 @@ author: rowanmiller
 ms.date: 10/27/2016
 ms.assetid: aeb0f5f8-b212-4f89-ae83-c642a5190ba0
 uid: core/miscellaneous/connection-strings
-ms.openlocfilehash: 942865effba7b491dd950886ea30b69a86f1186c
-ms.sourcegitcommit: dadee5905ada9ecdbae28363a682950383ce3e10
+ms.openlocfilehash: 7bb39d260f700e5087673e92a50377dc68151710
+ms.sourcegitcommit: 85ccc9ed42d4aaf7525c6312058c5c9ebdaed3ae
 ms.translationtype: MT
 ms.contentlocale: zh-CN
-ms.lasthandoff: 08/27/2018
-ms.locfileid: "42997666"
+ms.lasthandoff: 10/27/2018
+ms.locfileid: "50191337"
 ---
 # <a name="connection-strings"></a>连接字符串
 
-大多数数据库提供程序需要某种形式的连接字符串以连接到数据库。 有时此连接字符串包含必须受到保护的敏感信息。 您可能还需要更改连接字符串，如环境，如开发、 测试和生产环境之间移动你的应用程序。
+大多数数据库提供程序需要某种形式的连接字符串以连接到数据库。 有时此连接字符串包含必须受到保护的敏感信息。 在开发、测试和生产环境等环境之间移动应用程序时，可能还需要更改连接字符串。
 
 ## <a name="net-framework-applications"></a>.NET framework 应用程序
 
@@ -50,7 +50,7 @@ public class BloggingContext : DbContext
 
 ## <a name="universal-windows-platform-uwp"></a>通用 Windows 平台 (UWP)
 
-中的 UWP 应用程序的连接字符串通常是 SQLite 连接，只需指定本地文件名。 它们通常不包含敏感信息，并且无需更改，因为应用程序已部署。 在这种情况下，这些连接字符串是保持在代码中，通常没问题，如下所示。 如果你想要使它们摆脱代码 UWP 支持的设置概念，请参阅[UWP 文档的应用设置部分](https://docs.microsoft.com/windows/uwp/app-settings/store-and-retrieve-app-data)有关详细信息。
+UWP 应用程序中的连接字符串通常是仅指定本地文件名的 SQLite 连接。 它们通常不包含敏感信息，并且无需更改，因为应用程序已部署。 因此，这些连接字符串通常可保留在代码中，如下所示。 如果要将它们移出代码并使 UWP 支持设置的概念，请参阅 [UWP 文档的应用设置部分](https://docs.microsoft.com/windows/uwp/app-settings/store-and-retrieve-app-data)了解详细信息。
 
 ``` csharp
 public class BloggingContext : DbContext
@@ -67,7 +67,7 @@ public class BloggingContext : DbContext
 
 ## <a name="aspnet-core"></a>ASP.NET Core
 
-在 ASP.NET Core 配置系统是非常灵活，并在连接字符串可以存储在`appsettings.json`，环境变量、 用户密钥存储或另一个配置源。 请参阅[配置部分中的 ASP.NET Core 文档](https://docs.asp.net/en/latest/fundamentals/configuration.html)的更多详细信息。 下面的示例演示中存储的连接字符串`appsettings.json`。
+ASP.NET Core 中的配置系统非常灵活，并且连接字符串可以存储在 `appsettings.json`（一种环境变量）、用户机密存储或其他配置源中。 请参阅 [ASP.NET Core文档的配置部分](https://docs.asp.net/en/latest/fundamentals/configuration.html)了解更多详细信息。 下面的示例演示 `appsettings.json` 中存储的连接字符串。
 
 ``` json
 {
@@ -77,7 +77,7 @@ public class BloggingContext : DbContext
 }
 ```
 
-通常在中配置上下文`Startup.cs`正在从配置中读取的连接字符串。 请注意`GetConnectionString()`方法查找配置值，其键与`ConnectionStrings:<connection string name>`。
+通常在中配置上下文`Startup.cs`正在从配置中读取的连接字符串。 请注意`GetConnectionString()`方法查找配置值，其键与`ConnectionStrings:<connection string name>`。 需要导入[Microsoft.Extensions.Configuration](https://docs.microsoft.com/dotnet/api/microsoft.extensions.configuration)命名空间来使用此扩展方法。
 
 ``` csharp
 public void ConfigureServices(IServiceCollection services)

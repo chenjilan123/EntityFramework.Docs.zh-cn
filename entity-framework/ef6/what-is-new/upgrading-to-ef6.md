@@ -3,12 +3,12 @@ title: 升级到 Entity Framework 6
 author: divega
 ms.date: 10/23/2016
 ms.assetid: 29958ae5-85d3-4585-9ba6-550b8ec9393a
-ms.openlocfilehash: 2e2dacfe67238bdb7fd1f31f784319049f0f2cb0
-ms.sourcegitcommit: 2b787009fd5be5627f1189ee396e708cd130e07b
+ms.openlocfilehash: 711f1940080de27bd23cb8f641a5c7f2711dd65b
+ms.sourcegitcommit: a6082a2caee62029f101eb1000656966195cd6ee
 ms.translationtype: MT
 ms.contentlocale: zh-CN
-ms.lasthandoff: 09/13/2018
-ms.locfileid: "45490943"
+ms.lasthandoff: 12/10/2018
+ms.locfileid: "53182002"
 ---
 # <a name="upgrading-to-entity-framework-6"></a>升级到 Entity Framework 6
 
@@ -66,20 +66,20 @@ Install-Package EntityFramework
 
 命名空间的更改的一般规则是 System.Data.* 中的任何类型被移动到 System.Data.Entity.Core.*。 换而言之，只需插入**Entity.Core。** 之后 System.Data。 例如：
 
-- System.Data.EntityException = > System.Data。**Entity.Core。** EntityException  
-- System.Data.Objects.ObjectContext = > System.Data。**Entity.Core。** Objects.ObjectContext  
-- System.Data.Objects.DataClasses.RelationshipManager = > System.Data。**Entity.Core。** Objects.DataClasses.RelationshipManager  
+- System.Data.EntityException = > System.Data。**Entity.Core**。EntityException  
+- System.Data.Objects.ObjectContext = > System.Data。**Entity.Core**。Objects.ObjectContext  
+- System.Data.Objects.DataClasses.RelationshipManager = > System.Data。**Entity.Core**。Objects.DataClasses.RelationshipManager  
 
 这些类型是在*Core*命名空间因为它们不能直接提供大多数基于 DbContext 的应用程序。 属于 System.Data.Entity.dll 某些类型仍然可用于通常和直接基于 DbContext 的应用程序，因此不已移动到*Core*命名空间。 这些是：
 
-- System.Data.EntityState = > System.Data。**实体。** EntityState  
+- System.Data.EntityState = > System.Data。**实体**。EntityState  
 - System.Data.Objects.DataClasses.EdmFunctionAttribute = > System.Data。**Entity.DbFunctionAttribute**  
   > [!NOTE]
   > 此类已重命名;具有旧名称的类仍存在，且工作原理，但它现在标记为已过时。  
 - System.Data.Objects.EntityFunctions = > System.Data。**Entity.DbFunctions**  
   > [!NOTE]
   > 此类已重命名;具有旧名称的类仍存在，并且工作原理，但它现已标记为已过时。）  
-- 空间类 （例如，DbGeography，DbGeometry） 已从 System.Data.Spatial = > System.Data。**实体。** 空间
+- 空间类 （例如，DbGeography，DbGeometry） 已从 System.Data.Spatial = > System.Data。**实体**。空间
 
 > [!NOTE]
 > System.Data 命名空间中的某些类型是在 System.Data.dll 中这不是 EF 程序集。 未将这些类型，因此它们的命名空间保持不变。

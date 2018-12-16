@@ -16,15 +16,15 @@ ms.locfileid: "48834741"
 
 开发期间，数据模型将发生更改并与数据库不同步。 可以删除该数据库，让 EF 创建一个新的数据库来匹配该模型，但此过程会导致数据丢失。 EF Core 中的迁移功能能够以递增方式更新数据库架构，使其与应用程序的数据模型保持同步，同时保留数据库中的现有数据。
 
-迁移包括命令行工具和 API，可帮助执行以下任务：
+迁移包括命令行工具和 API，可协助我们执行以下任务：
 
-* [创建迁移](#create-a-migration)。 生成可以更新数据库以使其与一系列模型更改同步的代码。
+* [创建迁移](#create-a-migration)。 生成用于更新数据库的代码，使数据库与一系列模型更改同步。
 * [更新数据库](#update-the-database)。 应用挂起的迁移更新数据库架构。
 * [自定义迁移代码](#customize-migration-code)。 有时，需要修改或补充生成的代码。
 * [删除迁移](#remove-a-migration)。 删除生成的代码。
 * [还原迁移](#revert-a-migration)。 撤消数据库更改。
 * [生成 SQL 脚本](#generate-sql-scripts)。 可能需要一个脚本来更新生产数据库，或者对迁移代码进行故障排除。
-* [在运行时应用迁移](#apply-migrations-at-runtime)。 当设计时更新和正在运行脚本不是最佳选项时，调用 `Migrate()` 方法。
+* [在运行时应用迁移](#apply-migrations-at-runtime)。 如果在设计期间更新和运行脚本不是最佳选项时，可在运行时调用 `Migrate()` 方法。
 
 <a name="install-the-tools"></a>安装工具
 -----------------
@@ -45,16 +45,16 @@ Add-Migration InitialCreate
 dotnet ef migrations add InitialCreate
 ```
 
-向“迁移”目录下的项目添加以下三个文件：
+向**Migrations**目录下的项目添加以下三个文件：
 
 * **00000000000000_InitialCreate.cs**--主迁移文件。 包含应用迁移所需的操作（在 `Up()` 中）和还原迁移所需的操作（在 `Down()` 中）。
 * **00000000000000_InitialCreate.Designer.cs**--迁移元数据文件。 包含 EF 所用的信息。
 * **MyContextModelSnapshot.cs**--当前模型的快照。 用于确定添加下一迁移时的更改内容。
 
-文件名中的时间戳有助于保持文件按时间顺序排列，以便你可以查看更改进展。
+文件名中的时间戳有助于保证文件按时间顺序排列，以便你查看更改情况。
 
 > [!TIP]
-> 可以自由移动“迁移”文件并更改其命名空间。 创建的新迁移属于上个迁移的同级。
+> 可以自由移动“Migrations”目录下的迁移文件并更改其命名空间。 新建的迁移和上个迁移同级。
 
 <a name="update-the-database"></a>更新数据库
 -------------------
@@ -99,7 +99,7 @@ migrationBuilder.AddColumn<string>(
     nullable: true);
 ```
 
-虽然这些操作可使数据库架构兼容，但是它们不会保留现有客户姓名。 为了进行改善，请按如下所示进行重写。
+虽然这些操作可使数据库架构兼容，但是它们不会保留现有客户姓名。 如下所示，我们可以重写以改善这一情况。
 
 ``` csharp
 migrationBuilder.AddColumn<string>(
@@ -136,7 +136,7 @@ dotnet ef database update
 
 ### <a name="empty-migrations"></a>空迁移
 
-有时添加迁移而不进行任何模型更改很有用处。 在这种情况下，添加新迁移会创建一个带空类的代码文件。 可以自定义此迁移，执行与 EF Core 模型不直接相关的操作。 可能希望通过此方式管理的一些事项包括：
+有时模型未变更，直接添加迁移也很有用处。 在这种情况下，添加新迁移会创建一个带空类的代码文件。 可以自定义此迁移，执行与 EF Core 模型不直接相关的操作。 可能需要通过此方式管理的一些事项包括：
 
 * 全文搜索
 * 函数
@@ -159,7 +159,7 @@ dotnet ef migrations remove
 
 <a name="revert-a-migration"></a>还原迁移
 ------------------
-如果已对数据库应用一个迁移（或多个迁移），但需要将其复原，则可使用应用迁移的相同命令并指定要回退的迁移名称。
+如果已对数据库应用一个迁移（或多个迁移），但需将其复原，则可使用同一命令来应用迁移，并指定回退时的目标迁移名称。
 
 ``` powershell
 Update-Database LastGoodMigration

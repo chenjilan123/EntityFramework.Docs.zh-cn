@@ -22,7 +22,7 @@ ms.locfileid: "42994739"
 
 如果创建多个新的相关实体，则将其中一个添加到上下文时也会添加其他实体。
 
-在下面的示例中，博客和三个相关文章会全部插入到数据库中。 找到并添加这些文章，因为它们可以通过 `Blog.Posts` 导航属性访问。
+在下面的示例中，博客和三篇相关文章将全部被插入数据库中。 由于可通过 `Blog.Posts` 导航属性访问这些文章，因此可发现并添加它们。
 
 [!code-csharp[Main](../../../samples/core/Saving/Saving/RelatedData/Sample.cs#AddingGraphOfEntities)]
 
@@ -41,7 +41,7 @@ ms.locfileid: "42994739"
 
 如果更改实体的导航属性，则将对数据库中的外键列进行相应的更改。
 
-在下面的示例中，`post` 实体更新为属于新的 `blog` 实体，因为其 `Blog` 导航属性设置为指向 `blog`。 请注意，`blog` 也会插入到数据库中，因为它是已由上下文 (`post`) 跟踪的实体的导航属性引用的新实体。
+在下面的示例中，`post` 实体更新为属于新的 `blog` 实体，因为其 `Blog` 导航属性设置为指向 `blog`。 请注意，`blog` 也会插入到数据库中，因为它是已由上下文跟踪的实体 (`post`) 的导航属性引用的新实体。
 
 [!code-csharp[Main](../../../samples/core/Saving/Saving/RelatedData/Sample.cs#ChangingRelationships)]
 
@@ -57,6 +57,6 @@ ms.locfileid: "42994739"
 
 有关级联删除行为的工作原理、如何显式配置这些行为以及如何按照约定选择这些行为的详细信息，请参阅[级联删除](cascade-delete.md)。
 
-在下面的示例中，将在 `Blog` 和 `Post` 之间的关系上配置级联删除，以便从数据库中删除 `post` 实体。
+在下面的示例中，对 `Blog` 和 `Post` 之间的关系配置了级联删除，因此将从数据库中删除 `post` 实体。
 
 [!code-csharp[Main](../../../samples/core/Saving/Saving/RelatedData/Sample.cs#RemovingRelationships)]

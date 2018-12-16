@@ -4,12 +4,12 @@ author: anpete
 ms.date: 02/26/2018
 ms.assetid: 9F4450C5-1A3F-4BB6-AC19-9FAC64292AAD
 uid: core/modeling/query-types
-ms.openlocfilehash: 3328082dbc62aa80eb5fb29d2e57df1eef248d1f
-ms.sourcegitcommit: 2b787009fd5be5627f1189ee396e708cd130e07b
+ms.openlocfilehash: cb391343e6f24092ae0874003c0ef2935dd4e03f
+ms.sourcegitcommit: 8dd71a57a01c439431164c163a0722877d0e5cd8
 ms.translationtype: MT
 ms.contentlocale: zh-CN
-ms.lasthandoff: 09/13/2018
-ms.locfileid: "45489487"
+ms.lasthandoff: 12/07/2018
+ms.locfileid: "53028175"
 ---
 # <a name="query-types"></a>查询类型
 > [!NOTE]
@@ -56,28 +56,28 @@ EF Core 模型可以包含实体类型，除了_查询类型_，这可以用于�
 下面的示例演示如何使用查询类型来查询数据库视图。
 
 > [!TIP]
-> 可在 GitHub 上查看此文章的[示例](https://github.com/aspnet/EntityFrameworkCore/tree/master/samples/QueryTypes)。
+> 可在 GitHub 上查看此文章的[示例](https://github.com/aspnet/EntityFramework.Docs/tree/master/samples/core/QueryTypes)。
 
 首先，我们定义一个简单的博客和文章模型：
 
-[!code-csharp[Main](../../../efcore-repo/samples/QueryTypes/Program.cs#Entities)]
+[!code-csharp[Main](../../../samples/core/QueryTypes/Program.cs#Entities)]
 
 接下来，我们定义一个简单的数据库视图，这样就可以查询与每个博客帖子数：
 
-[!code-csharp[Main](../../../efcore-repo/samples/QueryTypes/Program.cs#View)]
+[!code-csharp[Main](../../../samples/core/QueryTypes/Program.cs#View)]
 
 接下来，我们定义一个类来保存数据库视图的结果：
 
-[!code-csharp[Main](../../../efcore-repo/samples/QueryTypes/Program.cs#QueryType)]
+[!code-csharp[Main](../../../samples/core/QueryTypes/Program.cs#QueryType)]
 
 接下来，我们配置中的查询类型_OnModelCreating_使用`modelBuilder.Query<T>`API。
 我们使用标准的 fluent 配置 Api 来配置查询类型的映射：
 
-[!code-csharp[Main](../../../efcore-repo/samples/QueryTypes/Program.cs#Configuration)]
+[!code-csharp[Main](../../../samples/core/QueryTypes/Program.cs#Configuration)]
 
 最后，我们可以采用标准方式来查询数据库视图：
 
-[!code-csharp[Main](../../../efcore-repo/samples/QueryTypes/Program.cs#Query)]
+[!code-csharp[Main](../../../samples/core/QueryTypes/Program.cs#Query)]
 
 > [!TIP]
 > 请注意我们还定义了上下文级别查询属性 (DbQuery) 作为针对此类型的查询的根。

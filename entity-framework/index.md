@@ -5,12 +5,12 @@ author: rowanmiller
 ms.date: 10/27/2016
 ms.assetid: 6bb12583-c39a-454c-8d83-d2a2793ca9ef
 uid: index
-ms.openlocfilehash: 2e58e8d443eb4881a211b20751dddfeba318bfd8
-ms.sourcegitcommit: dadee5905ada9ecdbae28363a682950383ce3e10
+ms.openlocfilehash: 2846545bdd7f29ba620592dacd288e3feb9ce6c4
+ms.sourcegitcommit: 064b09431f05848830e145a6cd65cad58881557c
 ms.translationtype: HT
 ms.contentlocale: zh-CN
-ms.lasthandoff: 08/27/2018
-ms.locfileid: "42994551"
+ms.lasthandoff: 11/28/2018
+ms.locfileid: "52552563"
 ---
 <div id="main" class="v2">
     <div class="container">
@@ -276,7 +276,7 @@ ms.locfileid: "42994551"
                                 </a>
                             </li>
                             <li>
-                                <a href="https://msdn.microsoft.com/library/dn223258(v=vs.113).aspx">
+                                <a href="https://docs.microsoft.com/dotnet/api/?view=entity-framework-6.2.0">
                                     <div class="cardSize">
                                         <div class="cardPadding">
                                             <div class="card">

@@ -3,21 +3,21 @@ title: 使用断开连接的实体 - EF6
 author: divega
 ms.date: 10/23/2016
 ms.assetid: 12138003-a373-4817-b1b7-724130202f5f
-ms.openlocfilehash: beb3847ce507a2112ac0d396a2023c7c4e2fca7d
-ms.sourcegitcommit: 2b787009fd5be5627f1189ee396e708cd130e07b
+ms.openlocfilehash: 11ca2a9a4161e02d32d98bf03dd4cf28545334b7
+ms.sourcegitcommit: 5e11125c9b838ce356d673ef5504aec477321724
 ms.translationtype: HT
 ms.contentlocale: zh-CN
-ms.lasthandoff: 09/13/2018
-ms.locfileid: "45489929"
+ms.lasthandoff: 10/25/2018
+ms.locfileid: "50022166"
 ---
 # <a name="working-with-disconnected-entities"></a>使用断开连接的实体
 在基于实体框架的应用程序中，上下文类负责检测应用于已跟踪实体的更改。 调用 SaveChanges 方法会将上下文跟踪的更改保存到数据库。 使用 n 层应用程序时，实体对象通常会在从上下文断开连接时发生变动，且必须决定如何跟踪更改并向上下文报告这些更改。 本主题讨论使用实体框架和断开连接的实体时不同的可用选项。   
 
 ## <a name="web-service-frameworks"></a>Web 服务框架
 
-Web 服务技术通常支持可用于在各个断开连接的对象上保存更改的模式。 例如，通过 ASP.NET Web API 可编写控制器操作，这些操作可以包括对 EF 的调用，以保存对数据库上的对象所做的更改。 实际上，Visual Studio 中的 Web API 工具可以轻松地从实体框架 6 模型构建 Web API 控制器。 有关详细信息，请参阅[一起使用 Web API 和实体框架 6](https://docs.microsoft.com/en-us/aspnet/web-api/overview/data/using-web-api-with-entity-framework/)。   
+Web 服务技术通常支持可用于在各个断开连接的对象上保存更改的模式。 例如，通过 ASP.NET Web API 可编写控制器操作，这些操作可以包括对 EF 的调用，以保存对数据库上的对象所做的更改。 实际上，Visual Studio 中的 Web API 工具可以轻松地从实体框架 6 模型构建 Web API 控制器。 有关详细信息，请参阅[一起使用 Web API 和实体框架 6](https://docs.microsoft.com/aspnet/web-api/overview/data/using-web-api-with-entity-framework/)。   
 
-以前，还有其他一些 Web 服务技术提供与实体框架的集成，例如 [WCF 数据服务](https://docs.microsoft.com/dotnet/framework/data/wcf/create-a-data-service-using-an-adonet-ef-data-wcf)和 [RIA 服务](https://docs.microsoft.com/en-us/previous-versions/dotnet/wcf-ria/ee707344(v=vs.91))。
+以前，还有其他一些 Web 服务技术提供与实体框架的集成，例如 [WCF 数据服务](https://docs.microsoft.com/dotnet/framework/data/wcf/create-a-data-service-using-an-adonet-ef-data-wcf)和 [RIA 服务](https://docs.microsoft.com/previous-versions/dotnet/wcf-ria/ee707344(v=vs.91))。
 
 ## <a name="low-level-ef-apis"></a>低级别 EF API
 

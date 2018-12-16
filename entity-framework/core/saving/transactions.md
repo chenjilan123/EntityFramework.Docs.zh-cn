@@ -20,13 +20,13 @@ ms.locfileid: "42993600"
 
 ## <a name="default-transaction-behavior"></a>默认事务行为
 
-默认情况下，如果数据库提供程序支持事务，则会在事务中应用对 `SaveChanges()` 的单一调用中的所有更改。 如果所有更改均失败，则会回滚事务且所有更改都不会应用到数据库。 这意味着，`SaveChanges()` 可保证完全成功，或在出现错误时不修改数据库。
+默认情况下，如果数据库提供程序支持事务，则会在单次调用 `SaveChanges()` 时将所有更改都将应用到事务中。 如果其中有任何更改失败，则会回滚事务且所有更改都不会应用到数据库。 这意味着，`SaveChanges()` 可保证要么完全成功，要么在出现错误时不修改数据库。
 
-对于大多数应用程序，此默认行为已足够。 如果应用程序要求被视为有必要，则应该仅手动控制事务。
+对于大多数应用程序，此默认行为已足够。 除非应用程序确有需求，否则不应手动控制事务。
 
 ## <a name="controlling-transactions"></a>控制事务
 
-可以使用 `DbContext.Database` API 开始、提交和回滚事务。 以下示例显示了两个 `SaveChanges()` 操作以及正在单个事务中执行的 LINQ 查询。
+可以使用 `DbContext.Database` API 开始、提交和回滚事务。 以下示例显示了在单个事务中执行的两个 `SaveChanges()` 操作以及 一个LINQ 查询。
 
 并非所有数据库提供程序都支持事务。 调用事务 API 时，某些提供程序可能会引发异常或不执行任何操作。
 
@@ -34,7 +34,7 @@ ms.locfileid: "42993600"
 
 ## <a name="cross-context-transaction-relational-databases-only"></a>跨上下文事务（仅限关系数据库）
 
-还可以跨多个上下文实例共享一个事务。 此功能仅在使用关系数据库提供程序时才可用，因为该提供程序需要使用特定于关系数据库的 `DbTransaction` 和 `DbConnection`。
+您还可以跨多个上下文实例共享一个事务。 此功能仅在使用关系数据库提供程序时才可用，因为它需要使用特定于关系数据库的 `DbTransaction` 和 `DbConnection`。
 
 若要共享事务，上下文必须共享 `DbConnection` 和 `DbTransaction`。
 
